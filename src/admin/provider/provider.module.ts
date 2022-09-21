@@ -7,5 +7,5 @@ import {ProviderService} from './provider.service';
     controllers: [ProviderController],
     providers: [ProviderService],
 })
-export class ProviderModule {
+export class AdminProviderModule {
 }

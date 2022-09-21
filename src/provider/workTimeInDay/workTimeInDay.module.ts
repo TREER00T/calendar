@@ -7,5 +7,5 @@ import {WorkTimeInDayService} from './workTimeInDay.service';
     controllers: [WorkTimeInDayController],
     providers: [WorkTimeInDayService],
 })
-export class AdminWorkTimeInDayModule {
+export class ProviderWorkTimeInDayModule {
 }

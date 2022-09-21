@@ -38,6 +38,7 @@ model Org {
   orgsWorkTimes OrgsWorkTimes[]
   orgsWorkTimeInDay OrgsWorkTimeInDay[]
   providersWorkTimes ProvidersWorkTimes[]
+  providersWorkTimeInDay ProvidersWorkTimeInDay[]
 
   @@map("orgs")
 }
@@ -49,6 +50,7 @@ model Service {
   amount_time Int
 
   providersWorkTimes ProvidersWorkTimes[]
+  providersWorkTimeInDay ProvidersWorkTimeInDay[]
 
   @@map("services")
 }
@@ -79,6 +81,12 @@ model ProvidersWorkTimeInDay {
 
   provider Provider @relation(fields: [provider_id], references: [id])
   provider_id Int
+
+  org Org @relation(fields: [org_id], references: [id])
+  org_id Int
+
+  service Service @relation(fields: [service_id], references: [id])
+  service_id Int
 
   date String
   day String
@@ -113,6 +121,8 @@ model ProvidersWorkTimes {
   service Service @relation(fields: [service_id], references: [id])
   service_id Int
 
+  provider Provider @relation(fields: [provider_id], references: [id])
+  provider_id Int
 
   usersOrders UsersOrders[]
 }
@@ -147,6 +157,7 @@ model Provider {
   password String
 
   orgsProviders OrgsProviders[]
+  providersWorkTimes ProvidersWorkTimes[]
   providersWorkTimeInDay ProvidersWorkTimeInDay[]
 
   @@map("providers")

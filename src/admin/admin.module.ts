@@ -1,17 +1,17 @@
 import {Module} from '@nestjs/common';
-import {AuthModule} from './auth/auth.module';
-import {ProviderModule} from './provider/provider.module';
+import {AdminAuthModule} from './auth/auth.module';
+import {AdminProviderModule} from './provider/provider.module';
 import {ServiceModule} from './service/service.module';
-import {WorkTimeModule} from './workTime/workTime.module';
-import {WorkTimeInDayModule} from './workTimeInDay/workTimeInDay.module';
+import {AdminWorkTimeModule} from './workTime/workTime.module';
+import {AdminWorkTimeInDayModule} from './workTimeInDay/workTimeInDay.module';
 
 @Module({
     imports: [
-        AuthModule,
-        ProviderModule,
+        AdminAuthModule,
+        AdminProviderModule,
         ServiceModule,
-        WorkTimeModule,
-        WorkTimeInDayModule
+        AdminWorkTimeModule,
+        AdminWorkTimeInDayModule
     ],
 })
 export class AdminModule {
