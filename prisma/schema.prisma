@@ -74,15 +74,6 @@ model User {
   @@map("users")
 }
 
-enum Day {
-  None
-  Saturday
-  Sunday
-  Monday
-  Tuesday
-  Wednesday
-}
-
 model ProvidersWorkTimeInDay {
   id        Int      @id @default(autoincrement())
 
@@ -90,7 +81,7 @@ model ProvidersWorkTimeInDay {
   provider_id Int
 
   date String
-  day Day @default(None)
+  day String
 
   providersWorkTimes ProvidersWorkTimes[]
 }
@@ -102,7 +93,7 @@ model OrgsWorkTimeInDay {
   org_id Int
 
   date String
-  day Day @default(None)
+  day String
 
   orgsWorkTimes OrgsWorkTimes[]
 }

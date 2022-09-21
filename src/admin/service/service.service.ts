@@ -9,7 +9,7 @@ export class Service {
     constructor(private prisma: PrismaService) {
     }
 
-    async addService(dto: ServiceDto) {
+    async add(dto: ServiceDto) {
         const service = await this.prisma.service.findFirst({
             where: {
                 name: dto.name
@@ -28,13 +28,13 @@ export class Service {
         return Res.json(HttpStatus.HTTP_CONFLICT);
     }
 
-    async getAllServices() {
+    async getAll() {
         let services = await this.prisma.service.findMany();
 
         return Res.json(HttpStatus.HTTP_OK, services);
     }
 
-    async editService(id: number, dto: ServiceDto) {
+    async edit(id: number, dto: ServiceDto) {
         const service = await this.prisma.service.findUnique({
             where: {
                 id: id
@@ -57,7 +57,7 @@ export class Service {
         return Res.json(HttpStatus.HTTP_OK);
     }
 
-    async deleteService(id: number) {
+    async delete(id: number) {
         const service = await this.prisma.service.findUnique({
             where: {
                 id: id

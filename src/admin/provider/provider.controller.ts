@@ -8,12 +8,12 @@ export class ProviderController {
     }
 
     @Post()
-    addProvider(@Body() dto: AuthDto) {
-        return this.providerService.addProvider(dto);
+    add(@Body() dto: AuthDto) {
+        return this.providerService.add(dto);
     }
 
     @Get()
-    getAllProviders() {
-        return this.providerService.getAllProviders();
+    getAll() {
+        return this.providerService.getAll();
     }
 }

@@ -9,7 +9,7 @@ export class ProviderService {
     constructor(private prisma: PrismaService) {
     }
 
-    async addProvider(dto: AuthDto) {
+    async add(dto: AuthDto) {
         const provider = await this.prisma.provider.findFirst({
             where: {
                 username: dto.username
@@ -34,7 +34,7 @@ export class ProviderService {
         return Res.json(HttpStatus.HTTP_CONFLICT);
     }
 
-    async getAllProviders() {
+    async getAll() {
         let providers = await this.prisma.orgsProviders.findMany({
             where: {
                 org_id: 1

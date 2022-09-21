@@ -8,22 +8,22 @@ export class ServiceController {
     }
 
     @Post()
-    addService(@Body() dto: ServiceDto) {
-        return this.service.addService(dto);
+    add(@Body() dto: ServiceDto) {
+        return this.service.add(dto);
     }
 
     @Get()
-    getAllServices() {
-        return this.service.getAllServices();
+    getAll() {
+        return this.service.getAll();
     }
 
     @Put('/:id')
-    editService(@Param() id: number, @Body() dto: ServiceDto) {
-        return this.service.editService(id, dto);
+    edit(@Param() id: number, @Body() dto: ServiceDto) {
+        return this.service.edit(id, dto);
     }
 
     @Delete('/:id')
-    deleteService(@Param() id: number) {
-        return this.service.deleteService(id);
+    delete(@Param() id: number) {
+        return this.service.delete(id);
     }
 }
