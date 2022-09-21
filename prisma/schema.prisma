@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource calendar {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+
+  username String @unique
+  password  String
+
+  orgsAdmins OrgsAdmins[]
+
+  @@map("admins")
+}
+
+model OrgsAdmins {
+  id        Int      @id @default(autoincrement())
+
+  org Org @relation(fields: [org_id], references: [id])
+  org_id Int
+
+  admin Admin @relation(fields: [admin_id], references: [id])
+  admin_id Int
+}
+
+model Org {
+  id        Int      @id @default(autoincrement())
+
+  name String
+
+  orgsAdmins OrgsAdmins[]
+  orgsProviders OrgsProviders[]
+  orgsWorkTimes OrgsWorkTimes[]
+  orgsWorkTimeInDay OrgsWorkTimeInDay[]
+  providersWorkTimes ProvidersWorkTimes[]
+
+  @@map("orgs")
+}
+
+model Service {
+  id        Int      @id @default(autoincrement())
+
+  name String
+  amount_time Int
+
+  providersWorkTimes ProvidersWorkTimes[]
+
+  @@map("services")
+}
+
+model UsersOrders {
+  id        Int      @id @default(autoincrement())
+
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
+
+  providersWorkTimes ProvidersWorkTimes @relation(fields: [provider_workTime_id], references: [id])
+  provider_workTime_id Int
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+
+  username String @unique
+  password  String
+
+  usersOrders UsersOrders[]
+
+  @@map("users")
+}
+
+enum Day {
+  None
+  Saturday
+  Sunday
+  Monday
+  Tuesday
+  Wednesday
+}
+
+model ProvidersWorkTimeInDay {
+  id        Int      @id @default(autoincrement())
+
+  provider Provider @relation(fields: [provider_id], references: [id])
+  provider_id Int
+
+  date String
+  day Day @default(None)
+
+  providersWorkTimes ProvidersWorkTimes[]
+}
+
+model OrgsWorkTimeInDay {
+  id        Int      @id @default(autoincrement())
+
+  org Org @relation(fields: [org_id], references: [id])
+  org_id Int
+
+  date String
+  day Day @default(None)
+
+  orgsWorkTimes OrgsWorkTimes[]
+}
+
+model ProvidersWorkTimes {
+  id        Int      @id @default(autoincrement())
+
+  start_time String
+  end_time String
+
+  providersWorkTimeInDay ProvidersWorkTimeInDay @relation(fields: [day_id], references: [id])
+  day_id Int
+
+  org Org @relation(fields: [org_id], references: [id])
+  org_id Int
+
+  service Service @relation(fields: [service_id], references: [id])
+  service_id Int
+
+
+  usersOrders UsersOrders[]
+}
+
+model OrgsWorkTimes {
+  id        Int      @id @default(autoincrement())
+
+  start_time String
+  end_time String
+
+  orgsWorkTimeInDay OrgsWorkTimeInDay @relation(fields: [day_id], references: [id])
+  day_id Int
+
+  org Org @relation(fields: [org_id], references: [id])
+  org_id Int
+}
+
+model OrgsProviders {
+  id        Int      @id @default(autoincrement())
+
+  org Org @relation(fields: [org_id], references: [id])
+  org_id Int
+
+  provider Provider @relation(fields: [provider_id], references: [id])
+  provider_id Int
+}
+
+model Provider {
+  id        Int      @id @default(autoincrement())
+
+  username String
+  password String
+
+  orgsProviders OrgsProviders[]
+  providersWorkTimeInDay ProvidersWorkTimeInDay[]
+
+  @@map("providers")
+}
+
