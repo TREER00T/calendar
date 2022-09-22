@@ -8,7 +8,7 @@ type Response = {
 
 export class Res {
 
-    static json(res: Response, data?: any[]) {
+    static json(res: Response, data?: any) {
         if (res.statusCode !== 200)
             throw new HttpException(res.message, res.statusCode);
 
