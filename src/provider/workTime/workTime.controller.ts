@@ -1,6 +1,7 @@
-import {Body, Controller, Post, Get, Delete, Param, Put} from '@nestjs/common';
+import {Body, Controller, Post, Get, Delete, Param, Put, Query} from '@nestjs/common';
 import {WorkTimeService} from './workTime.service';
 import {WorkTimeDto} from './dto';
+import {FilterWorkTimeDto} from './dto/filterWorkTime.dto';
 
 @Controller()
 export class WorkTimeController {
@@ -12,14 +13,14 @@ export class WorkTimeController {
         return this.workTimeService.add(dto);
     }
 
-    @Get('/:id')
-    getAll(@Param() id: number) {
-        return this.workTimeService.getAll(id);
+    @Get()
+    getAll(@Query() dto: FilterWorkTimeDto) {
+        return this.workTimeService.getAll(dto);
     }
 
     @Put('/:id')
     edit(@Param() id: number, @Body() dto: WorkTimeDto) {
-       // return this.workTimeService.edit(id, dto);
+        return this.workTimeService.edit(id, dto);
     }
 
     @Delete('/:id')

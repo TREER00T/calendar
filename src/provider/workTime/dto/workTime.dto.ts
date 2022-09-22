@@ -9,6 +9,14 @@ export class WorkTimeDto {
     @IsNotEmpty()
     end_time: string;
 
+    @IsString()
+    @IsNotEmpty()
+    date: string;
+
+    @IsString()
+    @IsNotEmpty()
+    day: string;
+
     @IsNumber()
     @IsNotEmpty()
     day_id: number;
@@ -16,4 +24,8 @@ export class WorkTimeDto {
     @IsNumber()
     @IsNotEmpty()
     service_id: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    provider_id: number;
 }

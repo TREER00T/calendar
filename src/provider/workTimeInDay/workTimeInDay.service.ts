@@ -13,6 +13,7 @@ export class WorkTimeInDayService {
         const orgWorkTimeInDay = await this.prisma.orgsWorkTimeInDay.findFirst({
             where: {
                 date: dto.date,
+                day: dto.day,
                 org_id: 1
             },
         });
