@@ -120,8 +120,8 @@ model OrgsWorkTimeInDay {
 model ProvidersWorkTimes {
   id        Int      @id @default(autoincrement())
 
-  start_time String
-  end_time String
+  start_time BigInt
+  end_time BigInt
 
   providersWorkTimeInDay ProvidersWorkTimeInDay @relation(fields: [day_id], references: [id])
   day_id Int
@@ -141,8 +141,8 @@ model ProvidersWorkTimes {
 model OrgsWorkTimes {
   id        Int      @id @default(autoincrement())
 
-  start_time String
-  end_time String
+  start_time BigInt
+  end_time BigInt
 
   orgsWorkTimeInDay OrgsWorkTimeInDay @relation(fields: [day_id], references: [id])
   day_id Int

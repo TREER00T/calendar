@@ -3,6 +3,7 @@ import {PrismaService} from '../../prisma/prisma.service';
 import {Res} from '../../util/Response';
 import {WorkTimeDto} from './dto';
 import HttpStatus from '../../util/HttpStatus';
+import {ID} from '../../type';
 
 @Injectable()
 export class WorkTimeService {
@@ -12,7 +13,7 @@ export class WorkTimeService {
     async add(dto: WorkTimeDto) {
         const workTimeInDay = await this.prisma.orgsWorkTimeInDay.findFirst({
             where: {
-                id: dto.day_id
+                id: parseInt(String(dto.day_id))
             },
         });
 
@@ -21,7 +22,7 @@ export class WorkTimeService {
                 data: {
                     start_time: dto.start_time,
                     end_time: dto.end_time,
-                    day_id: dto.day_id,
+                    day_id: parseInt(String(dto.day_id)),
                     org_id: 1
                 }
             });
@@ -30,20 +31,20 @@ export class WorkTimeService {
         return Res.json(HttpStatus.HTTP_CONFLICT);
     }
 
-    async getAll(id: number) {
+    async getAll(param: ID) {
         let orgWorkTimes = await this.prisma.orgsWorkTimes.findMany({
             where: {
-                day_id: id
+                day_id: parseInt(String(param.id))
             }
         });
 
         return Res.json(HttpStatus.HTTP_OK, orgWorkTimes);
     }
 
-    async delete(id: number) {
+    async delete(param: ID) {
         const orgWorkTime = await this.prisma.orgsWorkTimes.findUnique({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
         });
 
@@ -52,7 +53,7 @@ export class WorkTimeService {
 
         await this.prisma.orgsWorkTimes.delete({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             }
         });
 

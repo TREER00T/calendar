@@ -3,6 +3,7 @@ import {PrismaService} from '../../prisma/prisma.service';
 import {Res} from '../../util/Response';
 import {ServiceDto} from './dto';
 import HttpStatus from '../../util/HttpStatus';
+import {ID, OrderId, WorkTimeId} from '../../type';
 
 @Injectable()
 export class Service {
@@ -12,8 +13,8 @@ export class Service {
     async add(dto: ServiceDto) {
         let service = await this.prisma.providersWorkTimeInDay.findFirst({
             where: {
-                service_id: dto.service_id,
-                provider_id: dto.provider_id,
+                service_id: parseInt(String(dto.service_id)),
+                provider_id: parseInt(String(dto.provider_id)),
                 date: dto.date
             },
         });
@@ -24,10 +25,10 @@ export class Service {
 
         let userOrders = await this.prisma.usersOrders.create({
             data: {
-                user_id: dto.user_id,
-                service_id: dto.service_id,
+                user_id: parseInt(String(dto.user_id)),
+                service_id: parseInt(String(dto.service_id)),
                 org_id: 1,
-                provider_id: dto.provider_id,
+                provider_id: parseInt(String(dto.provider_id))
             }
         });
 
@@ -37,14 +38,14 @@ export class Service {
         });
     }
 
-    async addWorkTime(workTimeId: number, orderId: number) {
+    async addWorkTime(firstBody: WorkTimeId, secondBody: OrderId) {
 
         await this.prisma.usersOrders.update({
             where: {
-                id: orderId
+                id: parseInt(String(secondBody.orderId))
             },
             data: {
-                provider_workTime_id: workTimeId
+                provider_workTime_id: parseInt(String(firstBody.workTimeId))
             }
         });
 
@@ -52,21 +53,21 @@ export class Service {
         return Res.json(HttpStatus.HTTP_OK);
     }
 
-    async getAll(userId: number) {
+    async getAll(param: ID) {
         let userOrders = await this.prisma.usersOrders.findMany({
             where: {
-                user_id: userId
+                user_id: parseInt(String(param.id))
             }
         });
 
         return Res.json(HttpStatus.HTTP_OK, userOrders);
     }
 
-    async delete(id: number) {
+    async delete(param: ID) {
 
         await this.prisma.usersOrders.delete({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             }
         });
 

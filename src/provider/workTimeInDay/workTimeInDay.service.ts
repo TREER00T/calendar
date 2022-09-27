@@ -3,6 +3,8 @@ import {PrismaService} from '../../prisma/prisma.service';
 import {Res} from '../../util/Response';
 import {WorkTimeInDayDto} from './dto';
 import HttpStatus from '../../util/HttpStatus';
+import {ID, ServiceID} from '../../type';
+import ms from 'ms';
 
 @Injectable()
 export class WorkTimeInDayService {
@@ -25,32 +27,33 @@ export class WorkTimeInDayService {
             data: {
                 date: dto.date,
                 day: dto.day,
-                provider_id: dto.provider_id,
+                provider_id: parseInt(String(dto.provider_id)),
                 org_id: 1,
-                service_id: dto.service_id
+                service_id: parseInt(String(dto.service_id))
             }
         });
 
         return Res.json(HttpStatus.HTTP_OK);
     }
 
-    async getAll(providerId: number, serviceId: number) {
+    async getAll(param: ID, query: ServiceID) {
         let providerWorkTimeInWeek = await this.prisma.providersWorkTimeInDay.findMany({
             where: {
-                provider_id: providerId,
+                provider_id: parseInt(String(param.id)),
                 org_id: 1,
-                service_id: serviceId
+                service_id: parseInt(String(query.service_id))
             }
         });
 
+        console.log(providerWorkTimeInWeek)
         return Res.json(HttpStatus.HTTP_OK, providerWorkTimeInWeek);
     }
 
-    async edit(id: number, dto: WorkTimeInDayDto) {
+    async edit(param: ID, dto: WorkTimeInDayDto) {
 
         const providerWorkTimeInDay = await this.prisma.providersWorkTimeInDay.findUnique({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
         });
 
@@ -59,14 +62,14 @@ export class WorkTimeInDayService {
 
         await this.prisma.providersWorkTimeInDay.update({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
             data: {
                 date: dto.date,
                 day: dto.day,
-                provider_id: dto.provider_id,
+                provider_id: parseInt(String(dto.provider_id)),
                 org_id: 1,
-                service_id: dto.service_id
+                service_id: parseInt(String(dto.service_id))
             }
         });
 
@@ -74,10 +77,10 @@ export class WorkTimeInDayService {
         return Res.json(HttpStatus.HTTP_OK);
     }
 
-    async delete(id: number) {
+    async delete(param: ID) {
         const providerWorkTimeInDay = await this.prisma.providersWorkTimeInDay.findUnique({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
         });
 
@@ -86,12 +89,12 @@ export class WorkTimeInDayService {
 
         await this.prisma.providersWorkTimeInDay.delete({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             }
         }).then(() => {
             this.prisma.providersWorkTimes.deleteMany({
                 where: {
-                    day_id: id
+                    day_id: parseInt(String(param.id))
                 }
             });
         });

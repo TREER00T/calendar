@@ -3,11 +3,11 @@ import {IsNotEmpty, IsString, IsNumber} from 'class-validator';
 export class WorkTimeDto {
     @IsString()
     @IsNotEmpty()
-    start_time: string;
+    start_time: number;
 
     @IsString()
     @IsNotEmpty()
-    end_time: string;
+    end_time: number;
 
     @IsNumber()
     @IsNotEmpty()

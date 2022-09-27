@@ -1,6 +1,7 @@
 import {Body, Controller, Post, Get, Put, Delete, Param} from '@nestjs/common';
 import {Service} from './service.service';
 import {ServiceDto} from './dto';
+import {ID, OrderId,WorkTimeId} from '../../type';
 
 @Controller()
 export class ServiceController {
@@ -13,17 +14,17 @@ export class ServiceController {
     }
 
     @Put()
-    addWorkTime(@Body() workTimeId: number, @Body() orderId: number) {
+    addWorkTime(@Body() workTimeId: WorkTimeId, @Body() orderId: OrderId) {
         return this.service.addWorkTime(workTimeId, orderId);
     }
 
     @Get('/:id')
-    getAll(@Param() id: number) {
-        return this.service.getAll(id);
+    getAll(@Param() userId: ID) {
+        return this.service.getAll(userId);
     }
 
     @Delete('/:id')
-    delete(@Param() id: number) {
-        return this.service.delete(id);
+    delete(@Param() userId: ID) {
+        return this.service.delete(userId);
     }
 }

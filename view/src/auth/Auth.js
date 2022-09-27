@@ -1,10 +1,10 @@
-import './Login.css';
+import './Auth.css';
 import Select from 'react-select';
 import {FormGroup, FormControl, FormLabel, Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom'
 import {isEmpty} from '../util/validator';
-import Cookies from 'universal-cookie';
 import {getBaseUrl} from '../util/Util';
+import * as Cookie from '../util/Cookie';
 import Axios from 'axios';
 
 
@@ -40,11 +40,11 @@ function validateLoginForm() {
     return !isEmpty(formData.username) && !isEmpty(formData.password) && !isEmpty(state.itemSelected);
 }
 
-function Login() {
+function Auth() {
 
     const navigate = useNavigate();
 
-    async function login() {
+    async function singIn() {
 
         let isValidForm = validateLoginForm();
 
@@ -58,8 +58,7 @@ function Login() {
             });
 
         if (res.data.statusCode === 200) {
-            const cookies = new Cookies();
-            cookies.set('personType', state.itemSelected.value);
+            Cookie.set('personType', state.itemSelected.value);
             navigate('/home')
         }
 
@@ -69,6 +68,7 @@ function Login() {
     return (
         <div className="App">
             <div>
+
                 <FormGroup controlId="username"
                            validationState={state.formSubmitted}>
                     <FormLabel>Username</FormLabel>
@@ -94,7 +94,7 @@ function Login() {
                     }}
                 />
                 <br/>
-                <Button onClick={login} bsStyle="primary">Sign-In</Button>
+                <Button onClick={singIn} bsStyle="primary">Sign-In</Button>
 
             </div>
 
@@ -102,4 +102,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Auth;

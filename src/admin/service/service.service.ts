@@ -3,6 +3,8 @@ import {PrismaService} from '../../prisma/prisma.service';
 import {Res} from '../../util/Response';
 import {ServiceDto} from './dto';
 import HttpStatus from '../../util/HttpStatus';
+import {ID} from '../../type';
+
 
 @Injectable()
 export class Service {
@@ -20,7 +22,7 @@ export class Service {
             await this.prisma.service.create({
                 data: {
                     name: dto.name,
-                    amount_time: dto.amount_time
+                    amount_time: parseInt(String(dto.amount_time))
                 }
             });
 
@@ -34,10 +36,10 @@ export class Service {
         return Res.json(HttpStatus.HTTP_OK, services);
     }
 
-    async edit(id: number, dto: ServiceDto) {
+    async edit(param: ID, dto: ServiceDto) {
         const service = await this.prisma.service.findUnique({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
         });
 
@@ -46,21 +48,21 @@ export class Service {
 
         await this.prisma.service.update({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
             data: {
                 name: dto.name,
-                amount_time: dto.amount_time
+                amount_time: parseInt(String(dto.amount_time))
             }
         });
 
         return Res.json(HttpStatus.HTTP_OK);
     }
 
-    async delete(id: number) {
+    async delete(param: ID) {
         const service = await this.prisma.service.findUnique({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
         });
 
@@ -69,7 +71,7 @@ export class Service {
 
         await this.prisma.service.delete({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             }
         });
 

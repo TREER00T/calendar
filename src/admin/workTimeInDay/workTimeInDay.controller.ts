@@ -1,6 +1,7 @@
 import {Body, Controller, Post, Get, Delete, Param} from '@nestjs/common';
 import {WorkTimeInDayService} from './workTimeInDay.service';
 import {WorkTimeInDayDto} from './dto';
+import {ID} from '../../type';
 
 @Controller()
 export class WorkTimeInDayController {
@@ -18,7 +19,7 @@ export class WorkTimeInDayController {
     }
 
     @Delete('/:id')
-    delete(@Param() id: number) {
+    delete(@Param() id: ID) {
         return this.workTimeInDayService.delete(id);
     }
 }

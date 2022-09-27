@@ -1,8 +1,10 @@
-.App {
-    text-align: center;
-    margin-top: 2%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+    background-color: #F6F6F6;
+}
+
+.btn-r , .list{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 45%;
 }

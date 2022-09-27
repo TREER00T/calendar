@@ -3,6 +3,7 @@ import {PrismaService} from '../../prisma/prisma.service';
 import {Res} from '../../util/Response';
 import {WorkTimeInDayDto} from './dto';
 import HttpStatus from '../../util/HttpStatus';
+import {ID} from '../../type';
 
 @Injectable()
 export class WorkTimeInDayService {
@@ -35,10 +36,10 @@ export class WorkTimeInDayService {
         return Res.json(HttpStatus.HTTP_OK, orgWorkTimeInDay);
     }
 
-    async delete(id: number) {
+    async delete(param: ID) {
         const orgWorkTimeInDay = await this.prisma.orgsWorkTimeInDay.findUnique({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             },
         });
 
@@ -47,12 +48,12 @@ export class WorkTimeInDayService {
 
         await this.prisma.orgsWorkTimeInDay.delete({
             where: {
-                id: id
+                id: parseInt(String(param.id))
             }
         }).then(() => {
             this.prisma.orgsWorkTimes.deleteMany({
                 where: {
-                    day_id: id
+                    day_id: parseInt(String(param.id))
                 }
             });
         });
