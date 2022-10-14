@@ -1,22 +1,9 @@
 import {useNavigate} from 'react-router-dom';
-import Axios from 'axios';
 import {format} from 'date-fns';
 import {useState} from 'react';
-import {getBaseUrl} from '../../util/Util';
-import * as Cookie from '../../util/Cookie';
 import Calendar from './calendar/Calendar';
 import './ReserveWorkTimeInDay.css';
 
-let resObject;
-
-
-Axios.get(`${getBaseUrl()}provider/workTimeInDays/2`, { //${Cookie.get('providerId')}
-    params: {
-        service_id: 2 //Cookie.get('serviceId')
-    }
-}).then(res => {
-    resObject = res.data;
-});
 
 
 function ReserveWorkTimeInDay() {

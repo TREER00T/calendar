@@ -16,7 +16,7 @@ function ReserveProvider() {
 
     const handleClick = (e) => {
         Cookie.set('providerId', e.target.id);
-        navigate('service/reserve/workTimeInDay');
+        navigate('/service/reserve/workTimeInDay');
     }
 
 

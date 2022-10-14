@@ -9,8 +9,26 @@ import {
 } from 'date-fns';
 import Cell from './Cell';
 import {useState} from 'react';
+import Axios from 'axios';
+import {getBaseUrl} from '../../../util/Util';
 
 const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+
+let resObject;
+
+
+Axios.get(`${getBaseUrl()}provider/workTimeInDays/2`, { //${Cookie.get('providerId')}
+    params: {
+        service_id: 2 //Cookie.get('serviceId')
+    }
+}).then(res => {
+    res?.data?.data?.forEach(obj=>{
+        console.log(obj)
+    });
+    resObject = res.data;
+});
+
 
 const Calendar = ({value = new Date(), onChange}) => {
     let [clickDate, setClickDate] = useState(0);
