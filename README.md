@@ -1,4 +1,4 @@
 # Simple Calendar
 
 
-[Result](screenshots/result.png)
+![Result](screenshots/result.png)
