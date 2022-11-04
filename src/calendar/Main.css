@@ -1,0 +1,173 @@
+:root {
+    --light-body: #f3f8fe;
+    --light-main: #fdfdfd;
+    --light-second: #c3c2c8;
+    --light-second-100: #ededef;
+    --light-second-200: #808080FF;
+    --light-hover: #edf0f5;
+    --light-text: #151426;
+    --white: #fff;
+    --blue: rgb(0, 0, 255);
+    --ligth-blue: #2675EC;
+    --ligth-blue-100: #9cb9e7;
+    --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    --shadow-2: rgba(0, 0, 0, 0.2) 0px 7px 29px 0px;
+    --font-family: cursive;
+}
+
+.light {
+    --bg-body: var(--light-body);
+    --bg-main: var(--light-main);
+    --bg-second: var(--light-second);
+    --color-hover: var(--light-hover);
+    --color-txt: var(--light-text);
+}
+
+
+body {
+    display: grid;
+    height: 100vh;
+    place-items: center;
+    font-family: var(--font-family);
+    background-color: var(--bg-body);
+}
+
+.calendar {
+    background-color: var(--bg-main);
+    border-radius: 30px;
+    width: 100%;
+    padding: 15px;
+    overflow: hidden;
+}
+
+.light .calendar, .t {
+    box-shadow: var(--shadow);
+}
+
+.tt {
+    box-shadow: var(--shadow-2);
+    border: 2px solid white;
+}
+
+.calendar-header {
+    font-size: 25px;
+    font-weight: 400;
+    color: var(--color-txt);
+}
+
+.calendar-week-day {
+    display: grid;
+    grid-template-columns: repeat(7, 3fr);
+    font-weight: 300;
+}
+
+.calendar-week-day div {
+    display: grid;
+    place-items: center;
+    color: var(--bg-second);
+}
+
+.day:hover, .gray {
+    background-color: var(--light-hover);
+    color: var(--blue);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.btn-gray {
+    background-color: var(--light-hover);
+    color: var(--blue);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.blue, .blue:hover {
+    background-color: var(--ligth-blue);
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.btn-blue, .btn-blue:hover {
+    background-color: var(--ligth-blue);
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.btn-outline-blue {
+    border: 2px solid var(--ligth-blue);
+    cursor: pointer;
+    padding: 2% 4%;
+    text-align: center;
+    border-radius: 8px;
+    margin-left: 32%;
+    transition-property: background-color, color;
+    transition-duration: 500ms;
+}
+
+.btn-outline-blue:hover {
+    background-color: var(--ligth-blue);
+    color:white;
+}
+
+.noClick {
+    pointer-events: none;
+    text-align: center;
+    color: var(--light-second);
+}
+
+.noClickMonth {
+    color: var(--light-second-100);
+    pointer-events: none;
+    background-color: var(--ligth-blue-100);
+}
+
+.noClickYear {
+    color: var(--light-second-200);
+    pointer-events: none;
+    background-color: var(--light-hover);
+}
+
+
+button {
+    background-color: white;
+    font-weight: bold;
+    color: #555555;
+    border: none;
+}
+
+.pn-btn-body {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    text-align: center;
+}
+
+.tc-gray {
+    color: #555555;
+}
+
+.t {
+    font-size: 25px;
+    margin-right: 3%;
+    margin-left: 3%;
+    padding-right: 7%;
+    padding-bottom: 1.5%;
+    padding-top: 0;
+    padding-left: 7%;
+}
+
+.tt {
+    font-size: 25px;
+    padding-right: 5%;
+    padding-bottom: 1.5%;
+    padding-top: 0;
+    padding-left: 5%;
+}
+
+.day {
+    text-align: center;
+    padding: 20%;
+}
