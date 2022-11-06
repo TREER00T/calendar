@@ -2,8 +2,9 @@ import {
     add,
     differenceInDays,
     endOfMonth,
-    format,
     setDate,
+    setMonth,
+    setYear,
     startOfMonth,
     sub,
 } from 'date-fns';
@@ -14,8 +15,14 @@ const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 
 const Calendar = ({value = new Date(), onChange}) => {
-    let [clickDate, setClickDate] = useState(0);
-    let [clickMonth, setClickMonth] = useState(0);
+    let [clickDate, setClickDate] = useState(value.getDate());
+    let [clickMonth, setClickMonth] = useState(value.getMonth());
+    let [clickYear, setClickYear] = useState(value.getFullYear());
+    let monthPreCheck = {
+        pre: () => {
+            let a = clickMonth;
+        }
+    }
 
     const startDate = startOfMonth(value);
     const endDate = endOfMonth(value);
@@ -24,28 +31,50 @@ const Calendar = ({value = new Date(), onChange}) => {
     const prefixDays = startDate.getDay();
     const suffixDays = 6 - endDate.getDay();
 
-    const prevMonth = () => onChange(sub(value, {months: 1}));
-    const nextMonth = () => onChange(add(value, {months: 1}));
-    const prevYear = () => onChange(sub(value, {years: 1}));
-    const nextYear = () => onChange(add(value, {years: 1}));
+    const isPassedYear = clickYear <= new Date().getFullYear();
+    const isPassedMonth = clickMonth <= new Date().getMonth();
 
-    const isPassedYear = value.getFullYear() <= new Date().getFullYear();
-    const isPassedMonth = value.getMonth() <= new Date().getMonth();
-
-    const handleClickDate = index => {
-        const date = setDate(value, index);
-        setClickDate(date.getDate())
-        setClickMonth(date.getMonth())
-        onChange(date);
+    const prevYear = () => {
+        if (!isPassedYear)
+            handleClickYear(sub(value, {years: 1}).getFullYear())
+    };
+    const nextYear = () => {
+        handleClickYear(add(value, {years: 1}).getFullYear())
+    };
+    const prevMonth = () => {
+        if (isPassedMonth)
+            // console.log(clickYear > value.getFullYear())
+            handleClickMonth(sub(value, {months: 1}).getMonth())
+    };
+    const nextMonth = () => {
+        // console.log(value.getMonth() === 11)
+        if (value.getMonth() === 11)
+            nextYear();
+        handleClickMonth(add(value, {months: 1}).getMonth())
     };
 
-    const checkMonth = () => {
-        return (isPassedMonth ? "noClickMonth" : "") + " btn-blue t";
-    }
+
+    const handleClickDate = index => {
+            const date = setDate(value, index);
+            setClickDate(date.getDate())
+            onChange(date);
+        },
+        handleClickMonth = index => {
+            const date = setMonth(value, index);
+            setClickMonth(date.getMonth())
+            onChange(date);
+        },
+        handleClickYear = index => {
+            const date = setYear(value, index);
+            setClickYear(date.getFullYear())
+            onChange(date);
+        };
 
     const checkYear = () => {
-        return (isPassedYear ? "noClickYear" : "") + " btn-gray tt";
-    }
+        return (isPassedYear && isPassedMonth ? "noClickYear" : "") + " btn-gray tt";
+    }, checkMonth = () => {
+        return (isPassedMonth && isPassedYear ? "noClickMonth" : "") + " btn-blue t";
+    };
 
 
     return (
@@ -53,7 +82,7 @@ const Calendar = ({value = new Date(), onChange}) => {
             <div className="pn-btn-body">
                 <span className={checkYear()} onClick={prevYear}>&lt;&lt;</span>
                 <span className={checkMonth()} onClick={prevMonth}>&#60;</span>
-                <span>{format(value, "yyyy")}</span>
+                <span>{clickYear}</span>
                 <span className="btn-blue t" onClick={nextMonth}>&#62;</span>
                 <span className="btn-gray tt" onClick={nextYear}>&gt;&gt;</span>
             </div>
@@ -61,7 +90,7 @@ const Calendar = ({value = new Date(), onChange}) => {
             <div className="calendar-week-day">
 
                 {weeks.map((week) => (
-                    <th>{week}</th>
+                    <th key={week}>{week}</th>
                 ))}
 
                 {Array.from({length: prefixDays}).map((_, index) => (
@@ -69,24 +98,25 @@ const Calendar = ({value = new Date(), onChange}) => {
                 ))}
 
                 {Array.from({length: numDays}).map((_, index) => {
-                    const date = index + 1;
-                    const isCurrentDate = date === value.getDate();
-                    const isPassedDay = date < value.getDate();
-                    const isPassedMonth = value.getMonth() > new Date().getMonth();
-                    const clickNextDayWhenHavePassedDay = !isPassedMonth ? new Date().getDate() > date : false;
-                    // const isThisDate = clickDate < new Date().getDate();
+                    const dayClicked = index + 1;
+                    const isCurrentDate = dayClicked === value.getDate();
+                    const isPassedDay = new Date().getDate() > clickDate;
+                    const isPassedMonth = new Date().getMonth() > clickMonth;
+                    const isPassedYear = new Date().getFullYear() > clickYear;
+                    const clickNextDayWhenHavePassedDay = !isPassedMonth ? new Date().getDate() > dayClicked : false;
 
 
                     return (
                         <Number
-                            key={date}
+                            key={dayClicked}
                             isActive={isCurrentDate}
                             isPassedDay={isPassedDay}
-                            clickNextDayWhenHavePassedDay={clickNextDayWhenHavePassedDay}
-                            onClick={() => handleClickDate(date)}>
-                            {/*onClick={() => handleClickDate( isThisDate ? new Date().getDate() : date)}>*/}
+                            isPassedMonth={isPassedMonth}
+                            isPassedYear={isPassedYear}
+                            // clickNextDayWhenHavePassedDay={clickNextDayWhenHavePassedDay}
+                            onClick={() => handleClickDate(dayClicked)}>
 
-                            {date}
+                            {dayClicked}
                         </Number>
                     );
                 })}
