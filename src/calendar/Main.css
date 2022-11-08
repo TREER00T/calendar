@@ -30,6 +30,11 @@ body {
     place-items: center;
     font-family: var(--font-family);
     background-color: var(--bg-body);
+    -youbkit-touch-callout: none;
+    -youbkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .calendar {
