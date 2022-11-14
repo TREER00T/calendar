@@ -5,7 +5,6 @@ import {
     setDate,
     setMonth,
     setYear,
-    format,
     startOfMonth,
     sub,
 } from 'date-fns';
@@ -16,6 +15,7 @@ const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 
 const Calendar = ({value = new Date(), onChange}) => {
+
     let [clickDate, setClickDate] = useState(value.getDate());
     let [clickMonth, setClickMonth] = useState(value.getMonth());
     let [clickYear, setClickYear] = useState(value.getFullYear());
@@ -29,65 +29,62 @@ const Calendar = ({value = new Date(), onChange}) => {
     const prefixDays = startDate.getDay();
     const suffixDays = 6 - endDate.getDay();
 
-    const isPassedYear = clickYear > timeNow.getFullYear();
-    const hasPassedYear = clickYear >= timeNow.getFullYear();
-    const isPassedMonth = clickMonth > timeNow.getMonth() || clickMonth < timeNow.getMonth();
+    const isPassedYear = clickYear <= timeNow.getFullYear() && clickYear <= value.getFullYear();
+    const isPassedMonth = clickMonth <= timeNow.getMonth();
 
     const prevYear = () => {
-        console.log(value)
-        if (isPassedYear || isPassedMonth)
+        if ((timeNow.getFullYear() <= clickYear || timeNow.getMonth() <= clickMonth) || (value.getFullYear() <= clickYear || value.getMonth() <= clickMonth))
             handleClickYear(sub(value, {years: 1}).getFullYear())
     };
     const nextYear = () => {
-        handleClickYear(add(value, {years: 1}).getFullYear())
+        handleClickYear(add(value, {years: 1}).getFullYear());
     };
     const prevMonth = () => {
 
-        if (clickMonth === 0) {
-            handleClickYear(clickYear--);
+        let date = sub(value, {months: 1});
+
+        value = date;
+
+        if (clickMonth === 11) {
+            handleClickYear(value.getFullYear())
         }
 
-        if (isPassedMonth) {
-            // handleClickYear(sub(value, {years: 1}).getFullYear())
-            handleClickMonth(sub(value, {months: 1}).getMonth())
-
-            return;
-        }
-        console.log(clickMonth)
+        handleClickMonth(date.getMonth());
 
     };
     const nextMonth = () => {
+        let date = add(value, {months: 1});
+        value = date;
+
         if (clickMonth === 11) {
-            handleClickMonth(0);
-            handleClickYear(clickYear++);
-            return;
+            handleClickYear(date.getFullYear());
         }
 
-        handleClickMonth(add(value, {months: 1}).getMonth());
+        handleClickMonth(date.getMonth());
     };
 
 
     const handleClickDate = index => {
             const date = setDate(value, index);
-            setClickDate(date.getDate())
+            setClickDate(date.getDate());
             onChange(date);
         },
         handleClickMonth = index => {
             const date = setMonth(value, index);
-            setClickMonth(date.getMonth())
+            setClickMonth(date.getMonth());
             onChange(date);
         },
         handleClickYear = index => {
             const date = setYear(value, index);
-            setClickYear(date.getFullYear())
+            setClickYear(date.getFullYear());
             onChange(date);
         };
 
     const checkYear = () => {
-        return (hasPassedYear && isPassedMonth ? "noClickYear" : "") + " btn-gray tt";
+        return (isPassedYear || timeNow.getFullYear() + 2 > clickYear ? "noClickYear" : "") + " btn-gray tt";
     }, checkMonth = () => {
-        return clickMonth < timeNow.getMonth() && clickYear === timeNow.getFullYear() ?
-            "noClickMonth btn-gray t" : "btn-blue t";
+        return clickYear > timeNow.getFullYear() ? "btn-blue t" :
+            isPassedMonth ? "noClickMonth btn-gray t" : "btn-blue t";
     };
 
 
@@ -96,7 +93,7 @@ const Calendar = ({value = new Date(), onChange}) => {
             <div className="pn-btn-body">
                 <span className={checkYear()} onClick={prevYear}>&lt;&lt;</span>
                 <span className={checkMonth()} onClick={prevMonth}>&#60;</span>
-                <span>{clickYear}</span>
+                <span>{value.getFullYear()}</span>
                 <span className="btn-blue t" onClick={nextMonth}>&#62;</span>
                 <span className="btn-gray tt" onClick={nextYear}>&gt;&gt;</span>
             </div>
