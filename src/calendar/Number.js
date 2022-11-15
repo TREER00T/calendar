@@ -9,9 +9,6 @@ const Number = ({
                     onClick,
                     isActive,
                     className,
-                    isPassedMonth,
-                    isPassedYear,
-                    clickNextDayWhenHavePassedDay,
                     isPassedDay,
                     children
                 }) => {
@@ -21,9 +18,8 @@ const Number = ({
         <span
             onClick={!isActive ? onClick : undefined}
             className={
-                !children ? "noClick day" :
-                    isPassedDay ? "noClick day"
-                : check(isActive, className)
+                !children || isPassedDay ? "noClick day"
+                    : check(isActive, className)
             }
         >
             {children}

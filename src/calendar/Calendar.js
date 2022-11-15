@@ -33,11 +33,16 @@ const Calendar = ({value = new Date(), onChange}) => {
     const isPassedMonth = clickMonth <= timeNow.getMonth();
 
     const prevYear = () => {
-        if ((timeNow.getFullYear() <= clickYear || timeNow.getMonth() <= clickMonth) || (value.getFullYear() <= clickYear || value.getMonth() <= clickMonth))
-            handleClickYear(sub(value, {years: 1}).getFullYear())
+        if ((timeNow.getFullYear() <= clickYear || timeNow.getMonth() <= clickMonth) || (value.getFullYear() <= clickYear || value.getMonth() <= clickMonth)) {
+            let date = sub(value, {years: 1});
+            value = date;
+            handleClickYear(date.getFullYear())
+        }
     };
     const nextYear = () => {
-        handleClickYear(add(value, {years: 1}).getFullYear());
+        let date = add(value, {years: 1});
+        value = date;
+        handleClickYear(date.getFullYear());
     };
     const prevMonth = () => {
 
@@ -83,8 +88,8 @@ const Calendar = ({value = new Date(), onChange}) => {
     const checkYear = () => {
         return (isPassedYear || timeNow.getFullYear() + 2 > clickYear ? "noClickYear" : "") + " btn-gray tt";
     }, checkMonth = () => {
-        return clickYear > timeNow.getFullYear() ? "btn-blue t" :
-            isPassedMonth ? "noClickMonth btn-gray t" : "btn-blue t";
+        return (clickYear > timeNow.getFullYear() ? "" :
+            isPassedMonth ? "noClickMonth " : "") + "btn-blue t";
     };
 
 
@@ -111,10 +116,9 @@ const Calendar = ({value = new Date(), onChange}) => {
                 {Array.from({length: numDays}).map((_, index) => {
                     const dayClicked = index + 1;
                     const isCurrentDate = dayClicked === value.getDate();
-                    const isPassedDay = value.getDate() > clickDate;
-                    const isPassedMonth = value.getMonth() > clickMonth;
-                    const isPassedYear = value.getFullYear() > clickYear;
-                    const clickNextDayWhenHavePassedDay = !isPassedMonth ? value.getDate() > dayClicked : false;
+                    const isPassedYear = clickYear > timeNow.getFullYear();
+                    const isPassedMonth = clickMonth > timeNow.getMonth();
+                    const isPassedDay = timeNow.getDate() > dayClicked && !isPassedMonth && !isPassedYear;
 
 
                     return (
@@ -122,9 +126,6 @@ const Calendar = ({value = new Date(), onChange}) => {
                             key={dayClicked}
                             isActive={isCurrentDate}
                             isPassedDay={isPassedDay}
-                            isPassedMonth={isPassedMonth}
-                            isPassedYear={isPassedYear}
-                            // clickNextDayWhenHavePassedDay={clickNextDayWhenHavePassedDay}
                             onClick={() => handleClickDate(dayClicked)}>
 
                             {dayClicked}
